@@ -74,7 +74,6 @@ export const me = async (
   next: NextFunction
 ) => {
   try {
-    console.log(req.user)
     const user = await User.findById(req.user.id).select(
       '-password -__v -_id -createdAt -updatedAt'
     )
