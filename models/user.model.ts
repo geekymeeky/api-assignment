@@ -28,10 +28,11 @@ const userSchema = new mongoose.Schema({
 });
 
 
-interface IUser extends mongoose.Document {
+export interface IUser extends mongoose.Document {
     name: string;
     email: string;
     password: string;
+    isValidPassword: (password: string) => Promise<Error | boolean>;
 }
 
 userSchema.pre<IUser>('save', async function (next) {
@@ -52,6 +53,7 @@ userSchema.methods.isValidPassword = async function (
 ): Promise<Error | boolean> {
     return await bcrypt.compare(password, this.password);
 };
+
 
 
 const User = mongoose.model("User", userSchema);
