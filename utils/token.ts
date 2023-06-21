@@ -1,7 +1,7 @@
 import { IUser } from '../models/user.model'
 import jwt from 'jsonwebtoken'
 
-interface Token {
+export interface IToken {
   id: string
 }
 
@@ -13,7 +13,7 @@ export const createToken = (user: IUser): string => {
 
 export const verifyToken = async (
   token: string
-): Promise<jwt.VerifyErrors | Token> => {
+): Promise<jwt.VerifyErrors | IToken> => {
   return new Promise((resolve, reject) => {
     jwt.verify(
       token,
@@ -21,7 +21,7 @@ export const verifyToken = async (
       (err: any, payload: any) => {
         if (err) return reject(err)
 
-        resolve(payload as Token)
+        resolve(payload as IToken)
       }
     )
   })

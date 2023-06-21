@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import User, { IUser } from '../models/user.model'
-import { createToken } from '../utils/token'
+import { IToken, createToken } from '../utils/token'
 
 export const signup = async (
   req: Request,
@@ -65,5 +65,24 @@ export const login = async (
         message: error.message,
       })
     }
+  }
+}
+
+export const me = async (
+  req: Request & { user: IToken },
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    console.log(req.user)
+    const user = await User.findById(req.user.id).select(
+      '-password -__v -_id -createdAt -updatedAt'
+    )
+    res.status(200).json(user)
+  } catch (error) {
+    next({
+      status: 500,
+      message: error.message,
+    })
   }
 }

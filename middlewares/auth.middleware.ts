@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
+import { IToken } from '../utils/token'
 
 export const protect = (
-  req: Request & { user: string | jwt.JwtPayload },
+  req: Request & { user: jwt.JwtPayload },
   res: Response,
   next: NextFunction
 ) => {
@@ -22,7 +23,7 @@ export const protect = (
 
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET)
-    req.user = user
+    req.user = user as IToken
     next()
   } catch (e) {
     console.error(e)
