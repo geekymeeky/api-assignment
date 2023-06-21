@@ -6,7 +6,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
         const user = new User({
             name: req.body.name,
             email: req.body.email,
-            passwordHash: req.body.password
+            password: req.body.password
         });
         const result = await user.save();
         res.status(201).send(result);

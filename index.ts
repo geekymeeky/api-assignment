@@ -22,7 +22,8 @@ app.use(cors());
 app.use(morgan("dev"));
 
 // Routes
-app.use('/api/v1', userRouter);
+app.use('/api/v1/user', userRouter);
+
 
 // Error Middleware
 app.use(errorMiddleware)
