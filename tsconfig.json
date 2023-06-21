@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "sourceMap": true,
+      "outDir": "dist",
+      "lib": ["esnext"],
+      "esModuleInterop": true,
+      "paths": {
+        "@/utils/*": ["./utils/*"],
+        "@/models/*": ["./models/*"],
+        "@/controllers/*": ["./controllers/*"],
+        "@/middlewares/*": ["./middlewares/*"],
+        "@/routes/*": ["./routes/*"],
+      }
+    }
+  }
