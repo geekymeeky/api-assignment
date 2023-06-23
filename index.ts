@@ -8,6 +8,8 @@ import dotenv from 'dotenv'
 import userRouter from './routes/user.route'
 import ticketRouter from './routes/ticket.route'
 import errorMiddleware from './middlewares/error.middleware'
+import swaggerUi from 'swagger-ui-express'
+import swaggerDocument from './swagger.json'
 
 dotenv.config()
 
@@ -22,6 +24,7 @@ app.use(cors())
 app.use(morgan('dev'))
 
 // Routes
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/ticket', ticketRouter)
 
