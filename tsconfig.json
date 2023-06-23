@@ -4,5 +4,7 @@
       "outDir": "dist",
       "lib": ["esnext"],
       "esModuleInterop": true,
+      "target": "ES2015",
+      "moduleResolution": "Node16",
     }
   }
