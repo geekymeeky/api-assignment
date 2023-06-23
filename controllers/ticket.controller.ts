@@ -26,7 +26,10 @@ export const createTicket = async (
       tickets: tambolaTickets,
     })
     const result = await ticket.save()
-    res.status(201).send(result)
+    res.status(201).send({
+      message: 'Ticket created successfully',
+      id: result._id,
+    })
   } catch (error) {
     if (error.name === 'ValidationError') {
       next({
@@ -37,7 +40,37 @@ export const createTicket = async (
   }
 }
 
-export const getTickets = async (
+export const getOneTicketList = async (
+  req: Request & { user: IToken },
+  res: Response,
+  next: NextFunction
+) => {
+  const { ticketId } = req.params as { ticketId: string }
+  try {
+    const ticket = await Ticket.findById(ticketId).lean()
+    // match ticket with user
+    if (ticket.user.toString() !== req.user.id) {
+      console.log(ticket.user.toString(), req.user.id)
+      next({
+        status: 401,
+        message: 'Unauthorized',
+      })
+      return
+    }
+
+    if (!ticket) {
+      return []
+    }
+    return res.status(200).json(ticket)
+  } catch (error) {
+    next({
+      status: 500,
+      message: error.message,
+    })
+  }
+}
+
+export const getAllTicketsOfUser = async (
   req: Request & { user: IToken },
   res: Response,
   next: NextFunction

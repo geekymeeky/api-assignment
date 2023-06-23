@@ -7,12 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:5000",
-      "description": "Local server"
-    },
-    {
-      "url": "https://api-assignment-srijan.herokuapp.com",
-      "description": "Production server"
+      "url": "http://localhost:5000"
     }
   ],
   "components": {
@@ -34,9 +29,9 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "name": "Srijan",
+                  "name": "Srijan Gupta",
                   "email": "gupta.srijan94@gmail.com",
-                  "password": "123456789"
+                  "password": "59592449"
                 }
               }
             }
@@ -63,7 +58,7 @@
                 "type": "object",
                 "example": {
                   "email": "gupta.srijan94@gmail.com",
-                  "password": "123456789"
+                  "password": "59592449"
                 }
               }
             }
@@ -112,7 +107,7 @@
       },
       "get": {
         "tags": ["Ticket"],
-        "summary": "Fetch Tickets",
+        "summary": "Get all tickets by user",
         "security": [
           {
             "bearerAuth": []
@@ -120,15 +115,7 @@
         ],
         "parameters": [
           {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            },
-            "example": "1"
-          },
-          {
-            "name": "limit",
+            "name": "count",
             "in": "query",
             "schema": {
               "type": "integer"
@@ -146,10 +133,39 @@
         }
       }
     },
+    "/api/v1/ticket/{id}": {
+      "get": {
+        "tags": ["Ticket"],
+        "summary": "Get one ticket by id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "example": "64956117e0739a3638b7fe9d"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
     "/api/v1/user/me": {
       "get": {
         "tags": ["User"],
-        "summary": "Get User Details",
+        "summary": "Get user details",
         "security": [
           {
             "bearerAuth": []
