@@ -1,16 +1,21 @@
-import mongoose from 'mongoose';
-export default function connectDB() {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
+function connectDB() {
     return new Promise((resolve, reject) => {
-        mongoose.Promise = global.Promise;
-        mongoose.connection.on('error', (err) => {
+        mongoose_1.default.Promise = global.Promise;
+        mongoose_1.default.connection.on('error', (err) => {
             console.log(`MongoDB connection error: ${err}`);
             reject(err);
         });
-        mongoose.connection.once('open', () => {
+        mongoose_1.default.connection.once('open', () => {
             console.log('Connected to database');
-            resolve(mongoose);
+            resolve(mongoose_1.default);
         });
-        mongoose.connect(process.env.MONGO_URI || '');
+        mongoose_1.default.connect(process.env.MONGO_URI || '');
     });
 }
-//# sourceMappingURL=db.js.map
+exports.default = connectDB;

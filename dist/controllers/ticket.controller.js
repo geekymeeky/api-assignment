@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,10 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import Ticket from '../models/ticket.model';
-import TambolaTicket from '../utils/TambolaTicket';
-import { toInteger } from 'lodash';
-export const createTicket = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTickets = exports.createTicket = void 0;
+const ticket_model_1 = __importDefault(require("../models/ticket.model"));
+const TambolaTicket_1 = __importDefault(require("../utils/TambolaTicket"));
+const lodash_1 = require("lodash");
+const createTicket = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { count = 6 } = req.query;
         if (count > 6 || count < 1) {
@@ -20,8 +26,8 @@ export const createTicket = (req, res, next) => __awaiter(void 0, void 0, void 0
             });
             return;
         }
-        const tambolaTickets = new TambolaTicket(toInteger(count)).tickets();
-        const ticket = new Ticket({
+        const tambolaTickets = new TambolaTicket_1.default((0, lodash_1.toInteger)(count)).tickets();
+        const ticket = new ticket_model_1.default({
             user: req.user.id,
             tickets: tambolaTickets,
         });
@@ -37,16 +43,17 @@ export const createTicket = (req, res, next) => __awaiter(void 0, void 0, void 0
         }
     }
 });
-export const getTickets = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createTicket = createTicket;
+const getTickets = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // with pagination
     try {
         const { page = 1, limit = 10 } = req.query;
-        const tickets = yield Ticket.find({ user: req.user.id })
+        const tickets = yield ticket_model_1.default.find({ user: req.user.id })
             .limit(limit * 1)
             .skip((page - 1) * limit)
             .sort({ createdAt: -1 })
             .exec();
-        const count = yield Ticket.countDocuments();
+        const count = yield ticket_model_1.default.countDocuments();
         res.status(200).json({
             tickets,
             totalPages: Math.ceil(count / limit),
@@ -60,4 +67,4 @@ export const getTickets = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         });
     }
 });
-//# sourceMappingURL=ticket.controller.js.map
+exports.getTickets = getTickets;

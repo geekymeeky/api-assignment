@@ -1,4 +1,6 @@
-import { shuffle, unzip } from 'lodash';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const lodash_1 = require("lodash");
 class TambolaTicket {
     getTickets() {
         this.trials = 0;
@@ -185,7 +187,7 @@ class TambolaTicket {
     }
     getNewTicketFromList(numbers) {
         const ticket = this.getNewTicket();
-        numbers = shuffle(numbers);
+        numbers = (0, lodash_1.shuffle)(numbers);
         numbers.forEach((number) => {
             let availableRowIndex = 0;
             for (let i = 0; i < 3; i++) {
@@ -226,7 +228,7 @@ class TambolaTicket {
         // For each column in the ticket
         // Find out if there are cases when things need to be swapped.
         // If they do, swap them to fix order and then send.
-        const ticket = unzip(unSortedTicket);
+        const ticket = (0, lodash_1.unzip)(unSortedTicket);
         ticket.map((column) => {
             // Full column? Sort and return
             const flattenedColumn = column.filter(Boolean);
@@ -249,7 +251,7 @@ class TambolaTicket {
             }
             return column;
         });
-        return unzip(ticket);
+        return (0, lodash_1.unzip)(ticket);
     }
     constructor(ticketCount) {
         this.pickedNumbers = [];
@@ -264,5 +266,4 @@ class TambolaTicket {
         return sortedTickets;
     }
 }
-export default TambolaTicket;
-//# sourceMappingURL=TambolaTicket.js.map
+exports.default = TambolaTicket;
