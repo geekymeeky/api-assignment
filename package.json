@@ -24,6 +24,9 @@
     "morgan": "^1.10.0",
     "swagger-ui-express": "^4.6.3"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/compression": "^1.7.2",
