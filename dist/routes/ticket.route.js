@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const ticket_controller_1 = require("../controllers/ticket.controller");
 const auth_middleware_1 = require("../middlewares/auth.middleware");
 const router = express_1.default.Router();
-router.get('/', auth_middleware_1.protect, ticket_controller_1.getTickets);
+router.get('/', auth_middleware_1.protect, ticket_controller_1.getAllTicketsOfUser);
 router.post('/', auth_middleware_1.protect, ticket_controller_1.createTicket);
+router.get('/:ticketId', auth_middleware_1.protect, ticket_controller_1.getOneTicketList);
 exports.default = router;

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTickets = exports.createTicket = void 0;
+exports.getAllTicketsOfUser = exports.getOneTicketList = exports.createTicket = void 0;
 const ticket_model_1 = __importDefault(require("../models/ticket.model"));
 const TambolaTicket_1 = __importDefault(require("../utils/TambolaTicket"));
 const lodash_1 = require("lodash");
@@ -32,7 +32,10 @@ const createTicket = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
             tickets: tambolaTickets,
         });
         const result = yield ticket.save();
-        res.status(201).send(result);
+        res.status(201).send({
+            message: 'Ticket created successfully',
+            id: result._id,
+        });
     }
     catch (error) {
         if (error.name === 'ValidationError') {
@@ -44,7 +47,33 @@ const createTicket = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.createTicket = createTicket;
-const getTickets = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getOneTicketList = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { ticketId } = req.params;
+    try {
+        const ticket = yield ticket_model_1.default.findById(ticketId).lean();
+        // match ticket with user
+        if (ticket.user.toString() !== req.user.id) {
+            console.log(ticket.user.toString(), req.user.id);
+            next({
+                status: 401,
+                message: 'Unauthorized',
+            });
+            return;
+        }
+        if (!ticket) {
+            return [];
+        }
+        return res.status(200).json(ticket);
+    }
+    catch (error) {
+        next({
+            status: 500,
+            message: error.message,
+        });
+    }
+});
+exports.getOneTicketList = getOneTicketList;
+const getAllTicketsOfUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // with pagination
     try {
         const { page = 1, limit = 10 } = req.query;
@@ -67,4 +96,4 @@ const getTickets = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         });
     }
 });
-exports.getTickets = getTickets;
+exports.getAllTicketsOfUser = getAllTicketsOfUser;
